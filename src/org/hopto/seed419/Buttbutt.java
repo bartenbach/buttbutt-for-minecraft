@@ -4,8 +4,6 @@
  */
 package org.hopto.seed419;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -16,7 +14,7 @@ public class Buttbutt  extends JavaPlugin {
 
 
     private final ChatListener cl = new ChatListener(this);
-
+    private final String version = "0.1";
 
     @Override
     public void onEnable() {
@@ -28,13 +26,8 @@ public class Buttbutt  extends JavaPlugin {
         super.onDisable();
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        return super.onCommand(sender, command, label, args);
+    public String getVersion() {
+        return version;
     }
-
-
-
-
 
 }
