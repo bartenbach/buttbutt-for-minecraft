@@ -26,7 +26,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer().hasPlayedBefore()) {
-            int random = (int) (Math.random()*10);
+            int random = (int) (Math.random()*25);
             switch (random) {
                 case 0:
                     butt.buttChat("Welcome back, " + event.getPlayer().getName() + "!");

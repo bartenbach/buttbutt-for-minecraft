@@ -37,22 +37,26 @@ public class ChatListener implements Listener {
                 buttMe("is a robot!");
                 buttMe("does the robot");
             } else if (cmd[0].equalsIgnoreCase("!g")) {
-                String link = "http://www.google.com/search?q=" + cmd[1];
-                buttChat(link);
+                if (cmd.length == 1) {
+                    String link = "http://www.google.com/search?q=" + cmd[1];
+                    buttChat(link);
+                }
             } else if (cmd[0].equalsIgnoreCase("!notch")) {
                 buttMe("Notch is the creator of minecraft.");
                 buttMe("http://www.minecraftwiki.net/wiki/Notch");
             } else if (cmd[0].equalsIgnoreCase("!cov")) {
                 buttChat("h4x0r");
-            } else if (cmd[0].equalsIgnoreCase("!griefing")) {
-                buttChat("Griefing is only allowed in Z, otherwise: ban");
+            } else if (cmd[0].equalsIgnoreCase("!griefing") || cmd[0].equalsIgnoreCase("grief")) {
+                buttChat("ban");
             } else if (cmd[0].equalsIgnoreCase("!cbversion")) {
                 buttMe("Running Craftbukkit " + butt.getServer().getBukkitVersion());
             } else if (cmd[0].equalsIgnoreCase("!hal")) {
                 buttChat("I'm sorry Dave, I'm afraid I can't do that.");
             } else if (cmd[0].equalsIgnoreCase("!slap")) {
-                if (cmd.length == 2) {
+                if (cmd.length == 1) {
                     buttMe("slaps " + cmd[1] + " with a large trout");
+                } else {
+                    buttMe("slaps" + getArgs(cmd) + "with a large trout");
                 }
             }  else if (cmd[0].equalsIgnoreCase("!rage")) {
                 if (cmd.length == 1) {
@@ -80,12 +84,7 @@ public class ChatListener implements Listener {
                 if (cmd.length == 1) {
                     buttChat("Everything is bloat.");
                 } else {
-                    StringBuilder sb = new StringBuilder();
-                    cmd[0] = "";
-                    for (String x : cmd) {
-                        sb.append(x).append(" ");
-                    }
-                    buttChat(sb.toString() + "is bloat.");
+                    buttChat(getArgs(cmd) + "is bloat.");
                 }
             } else if (cmd[0].equalsIgnoreCase("!bai")) {
                 buttChat("BAIIIIIII!");
@@ -105,7 +104,7 @@ public class ChatListener implements Listener {
                 buttMe("is an open source project");
                 buttMe("https://github.com/SeeD419/buttbutt");
             } else if (cmd[0].equalsIgnoreCase("!fd")) {
-                int random = (int) (Math.random()*4)+2;
+                int random = (int) (Math.random()*7)+2;
                 buttBroadcast("[FD] " + ChatColor.AQUA + "buttbutt found "
                         + random + " diamonds!");
             } else if (cmd[0].equalsIgnoreCase("!emerald")) {
@@ -141,7 +140,7 @@ public class ChatListener implements Listener {
                 buttMe("does the robot");
             } else if (cmd[0].equalsIgnoreCase("!insult")) {
                 if (cmd.length == 2) {
-                    int random = (int) (Math.random()*5);
+                    int random = (int) (Math.random()*6);
                     switch (random) {
                     case 0:
                         buttChat("Your mother was a poopbutt, " + cmd[1]+ "!");
@@ -164,6 +163,9 @@ public class ChatListener implements Listener {
                         break;
                     case 5:
                         buttChat("You're as sharp as a marble, " + cmd[1]+ "!");
+                        break;
+                    default:
+                        buttChat("SeeD419 is a terrible programmer.");
                         break;
                     }
                 }
@@ -194,7 +196,7 @@ public class ChatListener implements Listener {
                     }
                 }
             } else if (cmd[0].equalsIgnoreCase("!level1isbest")) {
-                buttChat("level 1 is not butt");
+                buttChat("level1isbutt");
             } else if (cmd[0].equalsIgnoreCase("!poop")) {
                 buttMe("lets out a big slicker *plop*");
             } else if (cmd[0].equalsIgnoreCase("!banned")) {
@@ -227,7 +229,16 @@ public class ChatListener implements Listener {
 
     private boolean getButtButtChance() {
         int test = (int) (Math.random()*100);
-        return (test<=4);
+        return (test<=3);
+    }
+
+    private String getArgs(String[] args) {
+        args[0] = "";
+        StringBuilder sb = new StringBuilder();
+        for (String x : args) {
+            sb.append(x).append(" ");
+        }
+        return sb.toString();
     }
 
     private String buttformat(String message) {
@@ -326,6 +337,47 @@ public class ChatListener implements Listener {
         boolean success = replaceButt(split);
         if (!success) {
             replaceButt(split);
+        }
+    }
+
+    public void buttDie() {
+        int random = (int) (Math.random()*10);
+        switch (random) {
+        case 0:
+            buttBroadcast("buttbutt has drowned");
+            break;
+        case 1:
+            buttBroadcast("buttbutt hit the ground too hard");
+            break;
+        case 2:
+            buttBroadcast("buttbutt fell out of the world");
+            break;
+        case 3:
+            buttBroadcast("buttbutt tried to swim in lava");
+            break;
+        case 4:
+            buttBroadcast("buttbutt went up in flames");
+            break;
+        case 5:
+            buttBroadcast("buttbutt burned to death");
+            break;
+        case 6:
+            buttBroadcast("buttbutt blew up");
+            break;
+        case 7:
+            buttBroadcast("buttbutt was shot by a skeleton");
+            break;
+        case 8:
+            buttBroadcast("buttbutt was pricked to death");
+            break;
+        case 9:
+            buttBroadcast("buttbutt was shot by an arrow");
+            break;
+        case 10:
+            buttBroadcast("buttbutt was shot by an arrow");
+            break;
+        default:
+            break;
         }
     }
 
