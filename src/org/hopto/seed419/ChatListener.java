@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 /**
  *
@@ -37,14 +40,21 @@ public class ChatListener implements Listener {
                 String link = "http://www.google.com/search?q=" + cmd[1];
                 buttChat(link);
             } else if (cmd[0].equalsIgnoreCase("!notch")) {
-                buttChat("Notch is the fat man who created minecraft.");
+                buttMe("Notch is the creator of minecraft.");
+                buttMe("http://www.minecraftwiki.net/wiki/Notch");
             } else if (cmd[0].equalsIgnoreCase("!cov")) {
                 buttChat("h4x0r");
             } else if (cmd[0].equalsIgnoreCase("!griefing")) {
                 buttChat("Griefing is only allowed in Z, otherwise: ban");
+            } else if (cmd[0].equalsIgnoreCase("!cbversion")) {
+                buttMe("Running Craftbukkit " + butt.getServer().getBukkitVersion());
             } else if (cmd[0].equalsIgnoreCase("!hal")) {
-                buttChat("I'm sorry Dave, I'm afraid I can't do that.mem");
-            } else if (cmd[0].equalsIgnoreCase("!rage")) {
+                buttChat("I'm sorry Dave, I'm afraid I can't do that.");
+            } else if (cmd[0].equalsIgnoreCase("!slap")) {
+                if (cmd.length == 2) {
+                    buttMe("slaps " + cmd[1] + " with a large trout");
+                }
+            }  else if (cmd[0].equalsIgnoreCase("!rage")) {
                 if (cmd.length == 1) {
                     buttChat(event.getPlayer().getName() + " is about to rage quit");
                 } else {
@@ -66,26 +76,136 @@ public class ChatListener implements Listener {
                 int dice = (int) (Math.random()*players);
                 buttMe("rolls a huge " + players + " sided die and it flattens "
                         + butt.getServer().getOnlinePlayers()[dice].getName());
-            } else if (cmd[0].equalsIgnoreCase("!shit")) {
-                buttChat("I am version " + butt.getVersion() + " and my master is seed419");
+            } else if (cmd[0].equalsIgnoreCase("!bloat")) {
+                if (cmd.length == 1) {
+                    buttChat("Everything is bloat.");
+                } else {
+                    StringBuilder sb = new StringBuilder();
+                    cmd[0] = "";
+                    for (String x : cmd) {
+                        sb.append(x).append(" ");
+                    }
+                    buttChat(sb.toString() + "is bloat.");
+                }
             } else if (cmd[0].equalsIgnoreCase("!bai")) {
-                buttChat(event.getPlayer().getName() + " is leaving!  BAIIIIIII!");
+                buttChat("BAIIIIIII!");
             } else if (cmd[0].equalsIgnoreCase("!yt")) {
                 String link = "http://www.youtube.com/results?search_query=" + cmd[1];
                 buttChat(link);
             } else if (cmd[0].equalsIgnoreCase("!optifine")) {
                 buttMe("Optifine is a minecraft mod that improves FPS");
                 buttMe("http://bit.ly/JwjpDW");
-            } else if (cmd[0].equalsIgnoreCase("!oss")) {
+            } else if (cmd[0].equalsIgnoreCase("!minecraft")) {
+                buttMe("Minecraft.  The game that you're playing right now.");
+                buttMe("http://www.minecraft.net");
+            }  else if (cmd[0].equalsIgnoreCase("!herobrine")) {
+                buttMe("Herobrine...he's watching you.");
+                buttMe("http://www.minecraftwiki.net/wiki/Herobrine");
+            }  else if (cmd[0].equalsIgnoreCase("!oss")) {
                 buttMe("is an open source project");
                 buttMe("https://github.com/SeeD419/buttbutt");
             } else if (cmd[0].equalsIgnoreCase("!fd")) {
                 int random = (int) (Math.random()*4)+2;
                 buttBroadcast("[FD] " + ChatColor.AQUA + "buttbutt found "
                         + random + " diamonds!");
+            } else if (cmd[0].equalsIgnoreCase("!emerald")) {
+                buttMe("Emeralds are used as currency for trade with NPCs");
+                buttMe("http://www.minecraftwiki.net/wiki/Emerald");
+            } else if (cmd[0].equalsIgnoreCase("!cocoa")) {
+                if (cmd[1].startsWith("plant")) {
+                    buttMe("Cocoa Plants are plants which grow on Jungle Logs,");
+                    buttMe("and are found naturally on the trunk of naturally");
+                    buttMe("grown normal-sized jungle trees.");
+                    buttMe("http://www.minecraftwiki.net/wiki/Cocoa_Plant");
+                }
+            } else if (cmd[0].equalsIgnoreCase("!redstone")) {
+                if (cmd[1].equalsIgnoreCase("circuits")) {
+                    buttMe("Redstone circuitry is a feature introduced in Alpha ");
+                    buttMe("which allows for intricate Redstone wire based");
+                    buttMe("mechanisms to be created by players. Redstone ");
+                    buttMe("circuitry is similar to digital electronics ");
+                    buttMe("(based on boolean algebra) in real life.");
+                    buttMe("http://www.minecraftwiki.net/wiki/Redstone_Circuits");
+                }
+            } else if (cmd[0].equalsIgnoreCase("!air")) {
+                buttMe("Air is an invisible non-solid Block that is meant");
+                buttMe("to represent the absence of a block");
+                buttMe("http://www.minecraftwiki.net/wiki/Air");
+            } else if (cmd[0].equalsIgnoreCase("!hai")) {
+                if (cmd.length == 1) {
+                    buttChat("ohai");
+                } else {
+                    buttChat("hai there " + cmd[1]);
+                }
+            } else if (cmd[0].equalsIgnoreCase("!dance")) {
+                buttMe("does the robot");
+            } else if (cmd[0].equalsIgnoreCase("!insult")) {
+                if (cmd.length == 2) {
+                    int random = (int) (Math.random()*5);
+                    switch (random) {
+                    case 0:
+                        buttChat("Your mother was a poopbutt, " + cmd[1]+ "!");
+                        break;
+                    case 1:
+                        buttChat("You're not as bad as people say, " + cmd[1]+ ".");
+                        buttChat("You're worse!");
+                        break;
+                    case 2:
+                        buttChat("I'm busy right now, " + cmd[1]+ ".");
+                        buttChat("Can I ignore you some other time?");
+                        break;
+                    case 3:
+                        buttChat("Leaving so soon, " + cmd[1]+ "?");
+                        buttChat("I didn't have a chance to poison your tea...");
+                        break;
+                    case 4:
+                        buttChat("You really grow on people, " + cmd[1]+ "...");
+                        buttChat("Kinda like a wart.");
+                        break;
+                    case 5:
+                        buttChat("You're as sharp as a marble, " + cmd[1]+ "!");
+                        break;
+                    }
+                }
+            } else if (cmd[0].equalsIgnoreCase("!random")) {
+                int random = (int) (Math.random() * 1000);
+                buttChat(random + " is a random number");
+            } else if (cmd[0].equalsIgnoreCase("!throw")) {
+                if (cmd.length == 2) {
+                    try {
+                        buttMe("lifts up " + cmd[1]);
+                        Player player = butt.getServer().getPlayer(cmd[1]);
+                        Vector dir = player.getLocation().getDirection();
+                        Vector newv = new Vector(dir.getX(), dir.getY() + 1, dir.getZ());
+                        player.setVelocity(newv);
+                    } catch (Exception ex) {
+                        buttChat("Who the heck is " + cmd[1] + "?");
+                    }
+                }
+            } else if (cmd[0].equalsIgnoreCase("!drink")) {
+                if (cmd.length == 2) {
+                    String playerName = cmd[1];
+                    try {
+                        Player player = butt.getServer().getPlayer(playerName);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 5));
+                        buttChat("Have a drink, " + cmd[1]);
+                    } catch (Exception ex) {
+                        buttChat("Who the heck is " + cmd[1] + "?");
+                    }
+                }
+            } else if (cmd[0].equalsIgnoreCase("!level1isbest")) {
+                buttChat("level 1 is not butt");
             } else if (cmd[0].equalsIgnoreCase("!poop")) {
                 buttMe("lets out a big slicker *plop*");
-            }  else if (cmd[0].equalsIgnoreCase("!list")) {
+            } else if (cmd[0].equalsIgnoreCase("!banned")) {
+                if (cmd.length == 2) {
+                    String playerName = cmd[1];
+                    try {
+
+                    } catch (Exception ex) {
+                        buttChat("Who the heck is " + cmd[1] + "?");
+                    }
+                }            } else if (cmd[0].equalsIgnoreCase("!list")) {
                 StringBuilder sb = new StringBuilder();
                 for (Player x : butt.getServer().getOnlinePlayers()) {
                     sb.append(x.getName()).append(" ");
@@ -107,7 +227,7 @@ public class ChatListener implements Listener {
 
     private boolean getButtButtChance() {
         int test = (int) (Math.random()*100);
-        return (test<=5);
+        return (test<=4);
     }
 
     private String buttformat(String message) {
@@ -166,7 +286,7 @@ public class ChatListener implements Listener {
         return false;
     }
 
-    private void buttChat(final String buttFormat) {
+    public void buttChat(final String buttFormat) {
         butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
