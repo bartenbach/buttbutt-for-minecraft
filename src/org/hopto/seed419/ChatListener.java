@@ -62,10 +62,14 @@ public class ChatListener implements Listener {
                 if (cmd.length == 1) {
                     buttChat(event.getPlayer().getName() + " is about to rage quit");
                 } else {
-                    buttChat(cmd[1] + " is about to rage quit");
+                    buttChat(getArgs(cmd) + "is about to rage quit");
                 }
             } else if (cmd[0].equalsIgnoreCase("!sexy")) {
-                buttChat(event.getPlayer().getName() + " is a sexy beast!  Meeeow!");
+                if (cmd.length == 1) {
+                    buttChat(event.getPlayer().getName() + " is a sexy beast!  Meeeow!");
+                } else {
+                    buttChat(getArgs(cmd) + "is a sexy beast!  Meeeow!");
+                }
             } else if (cmd[0].equalsIgnoreCase("!fail")) {
                 buttChat("AHHH THE FAILURE! IT BURRRRNNSSS!!");
             } else if (cmd[0].equalsIgnoreCase("!ban")) {
@@ -236,7 +240,9 @@ public class ChatListener implements Listener {
         args[0] = "";
         StringBuilder sb = new StringBuilder();
         for (String x : args) {
-            sb.append(x).append(" ");
+            if (!x.isEmpty()) {
+                sb.append(x).append(" ");
+            }
         }
         return sb.toString();
     }

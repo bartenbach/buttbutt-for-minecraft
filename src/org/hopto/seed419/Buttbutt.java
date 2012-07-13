@@ -16,7 +16,7 @@ public class Buttbutt  extends JavaPlugin {
     private final ChatListener cl = new ChatListener(this);
     private final PlayerJoinListener pjl = new PlayerJoinListener(cl);
     private final PlayerQuitListener pql = new PlayerQuitListener(cl);
-    private final ButtDeath bd = new ButtDeath(cl);
+    private ButtDeath bd = new ButtDeath(cl);
     private final String version = "0.1";
 
     @Override
@@ -29,7 +29,7 @@ public class Buttbutt  extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
+        bd = null;
     }
 
     public String getVersion() {
