@@ -5,10 +5,11 @@
 package org.hopto.seed419;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -29,7 +30,7 @@ public class ChatListener implements Listener {
 
 
     @EventHandler
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.getMessage().startsWith("!")) {
             String[] cmd = event.getMessage().split(" ");
 
@@ -37,32 +38,62 @@ public class ChatListener implements Listener {
                 buttMe("is a robot!");
                 buttMe("does the robot");
             } else if (cmd[0].equalsIgnoreCase("!g")) {
-                if (cmd.length == 1) {
-                    String link = "http://www.google.com/search?q=" + cmd[1];
+                if (cmd.length > 1) {
+                    String link = "http://www.google.com/search?q=" + getArgs(cmd);
                     buttChat(link);
                 }
             } else if (cmd[0].equalsIgnoreCase("!notch")) {
                 buttMe("Notch is the creator of minecraft.");
                 buttMe("http://www.minecraftwiki.net/wiki/Notch");
-            } else if (cmd[0].equalsIgnoreCase("!cov")) {
-                buttChat("h4x0r");
+            } else if (cmd[0].equalsIgnoreCase("!rules")) {
+                buttMe(ChatColor.YELLOW + " ---- " + ChatColor.GOLD + "Rules" + ChatColor.YELLOW + " ---- ");
+                buttMe(ChatColor.RED + "[1] " + ChatColor.DARK_GREEN + "No Griefing");
+                buttMe(ChatColor.RED + "[2] " + ChatColor.DARK_GREEN + "No Stealing");
+                buttMe(ChatColor.RED + "[3] " + ChatColor.DARK_GREEN + "No asking for OP, mod, or admin");
+                buttMe(ChatColor.RED + "[4] " + ChatColor.DARK_GREEN + "No reckless use of TNT or lighters");
+                buttMe(ChatColor.RED + "[5] " + ChatColor.DARK_GREEN + "Keep trolling to a minimum");
+                buttMe(ChatColor.RED + "[6] " + ChatColor.DARK_GREEN + "No use of x-ray, fly, or wallhack mods");
+                buttMe(ChatColor.GRAY +"(Violation of and of these rules can result in being");
+                buttMe(ChatColor.GRAY +"jailed, banned, or beaten with fishing rods at");
+                buttMe(ChatColor.GRAY +"our amusement)");
             } else if (cmd[0].equalsIgnoreCase("!griefing") || cmd[0].equalsIgnoreCase("grief")) {
-                buttChat("ban");
+                buttChat("grief would get buttbutt ban");
             } else if (cmd[0].equalsIgnoreCase("!cbversion")) {
                 buttMe("Running Craftbukkit " + butt.getServer().getBukkitVersion());
             } else if (cmd[0].equalsIgnoreCase("!hal")) {
                 buttChat("I'm sorry Dave, I'm afraid I can't do that.");
             } else if (cmd[0].equalsIgnoreCase("!slap")) {
                 if (cmd.length == 1) {
-                    buttMe("slaps " + cmd[1] + " with a large trout");
+                    buttMe("slaps " + event.getPlayer().getName() + " with a large trout");
                 } else {
-                    buttMe("slaps" + getArgs(cmd) + "with a large trout");
+                    try {
+                        Player player = butt.getServer().getPlayer(cmd[1]);
+                        player.damage(0);
+                        Vector dir = player.getLocation().getDirection();
+                        Vector newv = new Vector(dir.getX(), dir.getY() + 0.2, dir.getZ());
+                        player.setVelocity(newv);
+                        buttMe("slaps " + getArgs(cmd) + "with a large trout");
+                    } catch (Exception ex) {
+                        buttMe(getArgs(cmd) + "is out of my reach");
+                    }
                 }
-            }  else if (cmd[0].equalsIgnoreCase("!rage")) {
+            } else if (cmd[0].equalsIgnoreCase("!rage")) {
                 if (cmd.length == 1) {
                     buttChat(event.getPlayer().getName() + " is about to rage quit");
                 } else {
                     buttChat(getArgs(cmd) + "is about to rage quit");
+                }
+            } else if (cmd[0].equalsIgnoreCase("!home")) {
+                if (cmd.length == 1) {
+                    try {
+                        Player player = event.getPlayer();
+                        Location loc = player.getBedSpawnLocation();
+                        if (loc != null) {
+                            player.teleport(loc);
+                            buttMsg(player, "buttbutt take u home safely");
+                        }
+                    } catch (Exception ex) {
+                    }
                 }
             } else if (cmd[0].equalsIgnoreCase("!sexy")) {
                 if (cmd.length == 1) {
@@ -71,7 +102,7 @@ public class ChatListener implements Listener {
                     buttChat(getArgs(cmd) + "is a sexy beast!  Meeeow!");
                 }
             } else if (cmd[0].equalsIgnoreCase("!fail")) {
-                buttChat("AHHH THE FAILURE! IT BURRRRNNSSS!!");
+                buttChat("AHHH THE FAILURE! IT BURRRRNS!!");
             } else if (cmd[0].equalsIgnoreCase("!ban")) {
                 buttChat("inb4 ban");
             } else if (cmd[0].equalsIgnoreCase("!halp")) {
@@ -84,6 +115,7 @@ public class ChatListener implements Listener {
                 int dice = (int) (Math.random()*players);
                 buttMe("rolls a huge " + players + " sided die and it flattens "
                         + butt.getServer().getOnlinePlayers()[dice].getName());
+                buttMe("before coming to a halt on " + ChatColor.DARK_RED + "YOU LOSE");
             } else if (cmd[0].equalsIgnoreCase("!bloat")) {
                 if (cmd.length == 1) {
                     buttChat("Everything is bloat.");
@@ -91,10 +123,10 @@ public class ChatListener implements Listener {
                     buttChat(getArgs(cmd) + "is bloat.");
                 }
             } else if (cmd[0].equalsIgnoreCase("!bai")) {
-                buttChat("BAIIIIIII!");
+                buttChat("baaaai");
             } else if (cmd[0].equalsIgnoreCase("!yt")) {
                 String link = "http://www.youtube.com/results?search_query=" + cmd[1];
-                buttChat(link);
+                buttMe(link);
             } else if (cmd[0].equalsIgnoreCase("!optifine")) {
                 buttMe("Optifine is a minecraft mod that improves FPS");
                 buttMe("http://bit.ly/JwjpDW");
@@ -176,17 +208,14 @@ public class ChatListener implements Listener {
             } else if (cmd[0].equalsIgnoreCase("!random")) {
                 int random = (int) (Math.random() * 1000);
                 buttChat(random + " is a random number");
-            } else if (cmd[0].equalsIgnoreCase("!throw")) {
-                if (cmd.length == 2) {
-                    try {
-                        buttMe("lifts up " + cmd[1]);
-                        Player player = butt.getServer().getPlayer(cmd[1]);
-                        Vector dir = player.getLocation().getDirection();
-                        Vector newv = new Vector(dir.getX(), dir.getY() + 1, dir.getZ());
-                        player.setVelocity(newv);
-                    } catch (Exception ex) {
-                        buttChat("Who the heck is " + cmd[1] + "?");
-                    }
+            } else if (cmd[0].equalsIgnoreCase("!asknoob")) {
+                buttMe(ChatColor.DARK_GREEN +"Please type " + ChatColor.WHITE + "I accept" + ChatColor.DARK_GREEN + " to indicate that you have");
+                buttMe(ChatColor.DARK_GREEN +"read, understand, and agree to follow the rules.");
+            } else if (cmd[0].equalsIgnoreCase("!kill")) {
+                if (cmd.length == 1) {
+                    buttChat("buttbutt don't want to kill no one");
+                } else {
+                    buttChat("buttbutt likes " + getArgs(cmd));
                 }
             } else if (cmd[0].equalsIgnoreCase("!drink")) {
                 if (cmd.length == 2) {
@@ -203,37 +232,29 @@ public class ChatListener implements Listener {
                 buttChat("level1isbutt");
             } else if (cmd[0].equalsIgnoreCase("!poop")) {
                 buttMe("lets out a big slicker *plop*");
-            } else if (cmd[0].equalsIgnoreCase("!banned")) {
-                if (cmd.length == 2) {
-                    String playerName = cmd[1];
-                    try {
-
-                    } catch (Exception ex) {
-                        buttChat("Who the heck is " + cmd[1] + "?");
-                    }
-                }            } else if (cmd[0].equalsIgnoreCase("!list")) {
-                StringBuilder sb = new StringBuilder();
-                for (Player x : butt.getServer().getOnlinePlayers()) {
-                    sb.append(x.getName()).append(" ");
-                }
-                buttMe(sb.toString());
+    //help
+            } else if (cmd[0].equalsIgnoreCase("!help")) {
+                Player player = event.getPlayer();
+                buttMsg(player, "bot, poop, random, asknoob, kill, drink, sexy,");
+                buttMsg(player, "dice, insult, dance, bai, air, redstone, cocoa,");
+                buttMsg(player, "emerald, fd, oss, herobrine, optifine, minecraft,");
+                buttMsg(player, "bloat, version, halp, ban, fail, rage, home, slap,");
+                buttMsg(player, "cbversion, hal, grief, notch, list, hai");
             }
-
         } else {
             boolean reply = getButtButtChance();
 
-            if(reply || event.getMessage().contains("buttbutt")) {
+            if(reply || event.getMessage().contains("buttbutt") || event.getMessage().contains("butt")) {
                 String message = event.getMessage();
                 final String buttFormat = buttformat(message);
                 buttChat(buttFormat);
             }
         }
-
     }
 
     private boolean getButtButtChance() {
         int test = (int) (Math.random()*100);
-        return (test<=3);
+        return (test<=1);
     }
 
     private String getArgs(String[] args) {
@@ -277,7 +298,6 @@ public class ChatListener implements Listener {
             }
         }
         return sb.toString();
-
     }
 
     private boolean replaceButt(String[] split) {
@@ -310,7 +330,7 @@ public class ChatListener implements Listener {
                 butt.getServer().broadcastMessage(ChatColor.DARK_GREEN + "[M]||||||||||" + ChatColor.WHITE + "{" +
                 ChatColor.GOLD + "buttbutt" + ChatColor.WHITE + "} " + ChatColor.GRAY + buttFormat);
             }
-        },20L);
+        },50L);
     }
 
     private void buttMe(final String buttFormat) {
@@ -320,7 +340,17 @@ public class ChatListener implements Listener {
                 butt.getServer().broadcastMessage(ChatColor.WHITE + "* " +
                 ChatColor.GOLD + "buttbutt " + ChatColor.WHITE + buttFormat);
             }
-        },20L);
+        },10L);
+    }
+
+    private void buttMsg(final Player player, final String buttFormat) {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
+            @Override
+            public void run() {
+                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.GOLD + "buttbutt" + ChatColor.GRAY
+                        + " -> me] " + ChatColor.WHITE + buttFormat);
+            }
+        },10L);
     }
 
     private void buttBroadcast(final String buttFormat) {
@@ -335,8 +365,7 @@ public class ChatListener implements Listener {
     private boolean isAWordWeDontReplace(String replace) {
         return replace.equalsIgnoreCase("is") || replace.equalsIgnoreCase("a") || replace.equalsIgnoreCase("the")
                 || replace.equalsIgnoreCase("i") || replace.equalsIgnoreCase("my") || replace.equalsIgnoreCase("to")
-                || replace.equalsIgnoreCase("in") || replace.equalsIgnoreCase("of") || replace.equalsIgnoreCase("butt")
-                || replace.equalsIgnoreCase("saw");
+                || replace.equalsIgnoreCase("in") || replace.equalsIgnoreCase("of") || replace.equalsIgnoreCase("butt");
     }
 
     private void buttRetry(String[] split) {

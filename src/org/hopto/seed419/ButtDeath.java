@@ -21,10 +21,19 @@ public class ButtDeath extends Thread {
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(1800000);
-            butt.buttDie();
-        } catch (InterruptedException ex) {}
+        while (butt != null) {
+            try {
+                if (butt != null) {
+                    Thread.sleep(2000000);
+                    butt.buttDie();
+                    double rand = (Math.random() * 100);
+                    if (rand < 5) {
+                        Thread.sleep(500);
+                        butt.buttChat(":(");
+                    }
+                }
+            } catch (InterruptedException ex) {}
+        }
     }
 
 
