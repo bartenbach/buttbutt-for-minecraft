@@ -1,8 +1,9 @@
 name: buttbutt
-version: 0.4
+version: 0.5
 main: co.proxa.buttbutt.Buttbutt
 author: proxa
-description: Professional troll and butt enthusiast
+description: Professional troll and enthusiast of butts
 website: http://github.com/proxa/buttbutt
 prefix: buttbutt
 load: startup
+depend: [ProtocolLib]

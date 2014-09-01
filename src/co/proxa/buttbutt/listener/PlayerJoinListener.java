@@ -1,57 +1,54 @@
 package co.proxa.buttbutt.listener;
 
-import co.proxa.buttbutt.ButtSpeaker;
+import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private ButtSpeaker butt;
+    private Buttbutt butt;
 
-    public PlayerJoinListener(ButtSpeaker butt) {
+    public PlayerJoinListener(Buttbutt butt) {
         this.butt = butt;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        butt.getPlayerListHandler().sendPlayerListPacket(event.getPlayer());
         if (event.getPlayer().hasPlayedBefore()) {
+            int random = (int) (Math.random()*100);
             if (event.getPlayer().getName().equalsIgnoreCase("seed419")) {
-                int random = (int) (Math.random()*100);
                 switch (random) {
                     case 0:
-                        butt.buttChat("Welcome back, master.");
+                        butt.getButtSpeaker().buttChat("welcome master.", 100L);
                 }
             } else {
-                int random = (int) (Math.random()*100);
                 switch (random) {
                     case 0:
-                        butt.buttChat("welcome back " + event.getPlayer().getName());
+                        butt.getButtSpeaker().buttChat("welcome back " + event.getPlayer().getName(), 100L);
                         break;
                     case 1:
-                        butt.buttChat("good to see you again " + event.getPlayer().getName());
+                        butt.getButtSpeaker().buttChat("good to see you again " + event.getPlayer().getName(), 100L);
                         break;
                     case 2:
-                        butt.buttChat("lookin good today, " + event.getPlayer().getName());
+                        butt.getButtSpeaker().buttChat("lookin good today, " + event.getPlayer().getName(), 100L);
                         break;
                     case 3:
-                        butt.buttChat("what's up, " + event.getPlayer().getName() + "?");
+                        butt.getButtSpeaker().buttChat("what's up, " + event.getPlayer().getName() + "?", 100L);
                         break;
                     case 4:
-                        butt.buttChat(event.getPlayer().getName() + ", is it hot in here or is it just you?");
+                        butt.getButtSpeaker().buttChat(event.getPlayer().getName() + ", is it hot in here or is it just you?", 100L);
                         break;
                     case 5:
-                        butt.buttChat("hey " + event.getPlayer().getName() + ", how are you?");
+                        butt.getButtSpeaker().buttChat("hey " + event.getPlayer().getName() + ", how are you?", 100L);
                         break;
                     default:
                         break;
                 }
             }
         } else {
-            butt.buttChat("Welcome, " + event.getPlayer().getName() + ".");
-            // Rules doesn't print in order and default probably can build atm...
-            //butt.buttChat("You will need to be approved before you can build.");
-            //butt.buttChat("Type !rules to see the server rules.");
+            butt.getButtSpeaker().buttChat("Welcome, " + event.getPlayer().getName() + ".", 100L);
         }
     }
 }

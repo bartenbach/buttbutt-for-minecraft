@@ -18,7 +18,7 @@ public class PlayerQuitListener implements Listener {
         int random = (int) (Math.random()*10);
         switch (random) {
         case 0:
-            butt.buttChat("I miss " + event.getPlayer().getName() + " already...");
+            butt.buttChat("I miss " + event.getPlayer().getName() + " already...", 200L);
         }
     }
 }

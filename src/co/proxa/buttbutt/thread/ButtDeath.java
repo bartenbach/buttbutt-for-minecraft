@@ -1,14 +1,15 @@
 package co.proxa.buttbutt.thread;
 
 import co.proxa.buttbutt.ButtSpeaker;
-import org.bukkit.plugin.java.JavaPlugin;
+import co.proxa.buttbutt.Buttbutt;
+import org.bukkit.ChatColor;
 
 public class ButtDeath extends Thread {
 
-    private JavaPlugin butt;
+    private Buttbutt butt;
     private ButtSpeaker buttSpeaker;
 
-    public ButtDeath(JavaPlugin butt, ButtSpeaker buttSpeaker) {
+    public ButtDeath(Buttbutt butt, ButtSpeaker buttSpeaker) {
         this.butt = butt;
         this.buttSpeaker = buttSpeaker;
     }
@@ -24,7 +25,7 @@ public class ButtDeath extends Thread {
                         double rand = (Math.random() * 100);
                         if (rand < 5) {
                             Thread.sleep(1000);
-                            buttSpeaker.buttChat(":(");
+                            buttSpeaker.buttChat(":(", 100L);
                         }
                     }
                 }
@@ -50,7 +51,8 @@ public class ButtDeath extends Thread {
                 buttSpeaker.buttBroadcast("buttbutt tried to swim in lava");
                 break;
             case 4:
-                buttSpeaker.buttBroadcast("buttbutt went up in flames");
+                int rdm = (int) (Math.random()*7)+2;
+                butt.getButtSpeaker().buttBroadcast(ChatColor.GRAY + "buttbutt found " + rdm + " coal!");
                 break;
             case 5:
                 buttSpeaker.buttBroadcast("buttbutt burned to death");
@@ -62,7 +64,8 @@ public class ButtDeath extends Thread {
                 buttSpeaker.buttBroadcast("buttbutt was shot by a skeleton");
                 break;
             case 8:
-                buttSpeaker.buttBroadcast("buttbutt was pricked to death");
+                int cob = (int) (Math.random()*7)+2;
+                butt.getButtSpeaker().buttBroadcast(ChatColor.AQUA + "buttbutt found " + cob + " diamonds!");
                 break;
             case 9:
                 buttSpeaker.buttBroadcast("buttbutt was shot by an arrow");

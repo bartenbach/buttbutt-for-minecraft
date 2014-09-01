@@ -1,8 +1,0 @@
-name: buttbutt
-version: 0.2
-main: org.hopto.seed419.Buttbutt
-author: SeeD419
-
-commands:
-   '!':
-      description: Access to buttbutt

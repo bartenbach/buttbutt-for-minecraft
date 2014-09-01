@@ -14,30 +14,30 @@ public class ButtSpeaker {
         this.buttScheduler = butt.getServer().getScheduler();
     }
 
-    public void buttChat(final String buttFormat) {
+    public void buttChat(final String buttFormat, final long delay) {
         buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 butt.getServer().broadcastMessage(ChatColor.GOLD + "buttbutt " + ChatColor.GRAY + buttFormat);
             }
-        },50L);
+        },delay);
     }
 
-    public void buttMe(final String buttFormat) {
+    public void buttMe(final String buttFormat, final long delay) {
         buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 butt.getServer().broadcastMessage(ChatColor.WHITE + "* " +
                         ChatColor.GOLD + "buttbutt " + ChatColor.WHITE + buttFormat);
             }
-        },10L);
+        },delay);
     }
 
     public void buttMsg(final CommandSender sender, final String buttFormat) {
         buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
-                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.GOLD + "buttbutt" + ChatColor.GRAY
+                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.GOLD + "buttbutt " + ChatColor.GRAY
                         + " -> me] " + ChatColor.WHITE + buttFormat);
             }
         },10L);
@@ -49,6 +49,6 @@ public class ButtSpeaker {
             public void run() {
                 butt.getServer().broadcastMessage(buttFormat);
             }
-        },20L);
+        },50L);
     }
 }

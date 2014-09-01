@@ -1,38 +1,34 @@
 package co.proxa.buttbutt.listener;
 
-import co.proxa.buttbutt.ButtSpeaker;
-import co.proxa.buttbutt.handler.ButtCommandHandler;
-import co.proxa.buttbutt.handler.ChatLoggingManager;
+import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
 
-    private ButtSpeaker buttSpeaker;
-    private ButtCommandHandler bch;
-    private ChatLoggingManager clm;
+    private Buttbutt butt;
 
-    public ChatListener(ButtCommandHandler bch, ButtSpeaker buttSpeaker, ChatLoggingManager clm) {
-        this.buttSpeaker = buttSpeaker;
-        this.bch = bch;
-        this.clm = clm;
+    public ChatListener(Buttbutt butt) {
+        this.butt = butt;
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.getMessage().startsWith("!")) {
-            bch.handleButtCommand(event.getPlayer(), event.getMessage().split(" "));
+            butt.getButtCommandHandler().handleButtCommand(event.getPlayer(), event.getMessage().split(" "));
         } else {
-            clm.logMessage(event.getPlayer().getName(), event.getMessage());
+            butt.getChatLoggingManager().logMessage(event.getPlayer().getName(), event.getMessage());
             boolean reply = getButtButtChance();
-            if (reply || event.getMessage().contains("buttbutt") || event.getMessage().contains("butt")) {
-                String message = event.getMessage();
-                final String buttFormat = buttformat(message).trim();
-                if (!buttFormat.equals(message)) {
-                    System.out.println(buttFormat);
-                    System.out.println(message);
-                    buttSpeaker.buttChat(buttFormat);
+            String message = event.getMessage();
+            if (reply || message.contains("buttbutt") || message.contains("butt")) {
+                if (message.equalsIgnoreCase("butt") || message.equalsIgnoreCase("buttbutt")) {
+                    butt.getButtNameResponseHandler().buttRespond(event.getPlayer());
+                } else {
+                    final String buttFormat = buttformat(message).trim();
+                    if (!buttFormat.equals(message)) {
+                        System.out.println(buttFormat);
+                    }
                 }
             }
         }
@@ -73,7 +69,6 @@ public class ChatListener implements Listener {
             }
         }
         return sb.toString();
-        // TODO butt emotes
     }
 
     private boolean replaceButt(String[] split) {
@@ -91,6 +86,8 @@ public class ChatListener implements Listener {
                 split[replace] = "buttify";
             } else if (split[replace].endsWith("ly")) {
                 split[replace] = "buttly";
+            } else if (split[replace].endsWith("er")) {
+                split[replace] = "butter";
             } else if (split[replace].endsWith("'s")) {
                 split[replace] = "butt's";
             } else if (split[replace].endsWith("s")) {

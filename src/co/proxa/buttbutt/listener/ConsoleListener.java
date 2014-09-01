@@ -1,6 +1,6 @@
 package co.proxa.buttbutt.listener;
 
-import co.proxa.buttbutt.handler.ButtCommandHandler;
+import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,16 +9,16 @@ import org.bukkit.event.server.ServerCommandEvent;
 
 public class ConsoleListener implements Listener{
 
-    private ButtCommandHandler bch;
+    private Buttbutt butt;
 
-    public ConsoleListener(ButtCommandHandler bch) {
-        this.bch = bch;
+    public ConsoleListener(Buttbutt butt) {
+        this.butt = butt;
     }
 
     @EventHandler (ignoreCancelled = false, priority = EventPriority.NORMAL)
     void onConsoleCommand(ServerCommandEvent event) {
         if (event.getCommand().startsWith("!")) {
-            bch.handleButtCommand(event.getSender(), event.getCommand().split(" "));
+            butt.getButtCommandHandler().handleButtCommand(event.getSender(), event.getCommand().split(" "));
         }
     }
 }
