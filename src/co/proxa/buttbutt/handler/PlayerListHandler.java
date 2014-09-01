@@ -44,7 +44,7 @@ public class PlayerListHandler {
     }
 
     public void sendPlayerListPacket(Player player) {
-        
+
     }
 
 }
