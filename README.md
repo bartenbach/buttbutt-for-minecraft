@@ -1,3 +1,3 @@
 #buttbutt
 Minecraft chat bot inspired by buttbot
-![buttpic][http://buttbot.googlecode.com/svn/trunk/buttbot.gif]
+![Real photograph of buttbutt][http://buttbot.googlecode.com/svn/trunk/buttbot.gif "Real photograph of buttbutt"]
