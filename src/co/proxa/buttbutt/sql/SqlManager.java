@@ -82,22 +82,21 @@ public class SqlManager {
     public PreparedStatement getPreparedStatement(String query) {
         try {
             return this.connection.prepareStatement(query);
-        } catch (SQLException e) {
-            butt.getLogger().severe("Unable to prepare SQL statement.  Stacktrace following:");
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            butt.getLogger().severe("Unable to prepare SQL statement.  Stacktrace:");
+            ex.printStackTrace();
             return null;
         }
     }
 
     public void prepareStatement(PreparedStatement ps, Object ... objects) {
-        //int i = 1;
         try {
             for (int i = 0 ; i < objects.length ; i++) {
                 System.out.println(objects[i]);
                 if (objects[i] instanceof String) {
                     ps.setString((i+1), (String) objects[i]);
                 } else {
-                    System.out.println("not a string somehow");
+                    ps.setInt((i+1), (int) objects[i]);
                 }
                 i++;
             }
@@ -125,5 +124,5 @@ public class SqlManager {
             return isConnected();
         }
     }
-
+    
 }
