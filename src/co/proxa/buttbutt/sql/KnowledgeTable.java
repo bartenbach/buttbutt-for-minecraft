@@ -60,17 +60,38 @@ public class KnowledgeTable {
 
     public boolean deleteKnowledge(String item) {
         if (butt.getSqlManager().isConnected()) {
+            System.out.println(item);
             String update = "DELETE FROM `" + butt.getSqlManager().getTablePrefix() + "_knowledge` WHERE item=?";
             PreparedStatement ps = butt.getSqlManager().getPreparedStatement(update);
             try {
-                ps.setString(1, item);
+                ps.setString(1, item.trim());
                 int rows = ps.executeUpdate();
-                return rows > 0; // if no rows have been updated then we haven't actually deleted anything
+                return (rows > 0); // if no rows have been updated then we haven't actually deleted anything
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return false;
+    }
+
+    public String getRandomData() {
+        if (butt.getSqlManager().isConnected()) {
+            String query = "SELECT * FROM `" + butt.getSqlManager().getTablePrefix() + "_knowledge` ORDER BY RAND() LIMIT 1";
+            PreparedStatement ps = butt.getSqlManager().getPreparedStatement(query);
+            ResultSet rs = butt.getSqlManager().getResultSet(ps);
+            try {
+                if (rs.next()) {
+                    return rs.getString("data");
+                }
+            } catch (SQLException ex) {
+                butt.getLogger().severe("SQL Exception has occurred.  StackTrace:");
+                ex.printStackTrace();
+            }
+        } else {
+            butt.getSqlManager().reconnect();
+            getRandomData();
+        }
+        return null;
     }
 
 }

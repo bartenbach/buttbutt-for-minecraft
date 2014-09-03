@@ -1,7 +1,6 @@
 package co.proxa.buttbutt.thread;
 
 import co.proxa.buttbutt.Buttbutt;
-import org.bukkit.ChatColor;
 
 public class ButtDeath extends Thread {
 
@@ -32,28 +31,27 @@ public class ButtDeath extends Thread {
         }
     }
 
-    //TODO revert this to simply a death thread and create a separate thread for chatting and finding ores
     public void buttDie() {
         int random = (int) (Math.random()*10);
         switch (random) {
             case 0:
-                butt.getButtSpeaker().buttBroadcast("buttbutt has drowned");
+                butt.getButtSpeaker().buttBroadcast("buttbutt drowned whilst trying to escape skeleton");
                 break;
             case 1:
-                butt.getButtSpeaker().buttBroadcast("buttbutt hit the ground too hard");
+                butt.getButtSpeaker().buttBroadcast("buttbutt fell from a high place");
                 break;
             case 2:
-                butt.getButtSpeaker().buttBroadcast("buttbutt fell out of the world");
+                butt.getButtSpeaker().buttBroadcast("buttbutt suffocated in a wall");
                 break;
             case 3:
                 butt.getButtSpeaker().buttBroadcast("buttbutt tried to swim in lava");
                 break;
             case 4:
                 int rdm = (int) (Math.random()*7)+2;
-                butt.getButtSpeaker().buttBroadcast(ChatColor.GRAY + "buttbutt found " + rdm + " coal!");
+                butt.getButtSpeaker().buttBroadcast("buttbutt was struck by lightning");
                 break;
             case 5:
-                butt.getButtSpeaker().buttBroadcast("buttbutt burned to death");
+                butt.getButtSpeaker().buttBroadcast("buttbutt was fireballed by ghast");
                 break;
             case 6:
                 butt.getButtSpeaker().buttBroadcast("buttbutt blew up");
@@ -63,7 +61,7 @@ public class ButtDeath extends Thread {
                 break;
             case 8:
                 int cob = (int) (Math.random()*7)+2;
-                butt.getButtSpeaker().buttBroadcast(ChatColor.AQUA + "buttbutt found " + cob + " diamonds!");
+                butt.getButtSpeaker().buttBroadcast("buttbutt was burnt to a crisp while fighting zombie");
                 break;
             case 9:
                 butt.getButtSpeaker().buttBroadcast("buttbutt was shot by an arrow");
@@ -72,7 +70,6 @@ public class ButtDeath extends Thread {
                 butt.getButtSpeaker().buttBroadcast("buttbutt was slain by zombie");
                 break;
             default:
-                butt.getLogger().warning("This should never happen: " + random);
                 break;
         }
     }
