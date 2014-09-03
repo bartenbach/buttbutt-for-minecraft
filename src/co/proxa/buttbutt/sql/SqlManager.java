@@ -92,7 +92,6 @@ public class SqlManager {
     public void prepareStatement(PreparedStatement ps, Object ... objects) {
         try {
             for (int i = 0 ; i < objects.length ; i++) {
-                System.out.println(objects[i]);
                 if (objects[i] instanceof String) {
                     ps.setString((i+1), (String) objects[i]);
                 } else {
@@ -124,5 +123,5 @@ public class SqlManager {
             return isConnected();
         }
     }
-    
+
 }

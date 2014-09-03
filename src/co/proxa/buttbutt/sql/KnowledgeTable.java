@@ -65,18 +65,12 @@ public class KnowledgeTable {
             try {
                 ps.setString(1, item);
                 int rows = ps.executeUpdate();
-                return rows > 0;
+                return rows > 0; // if no rows have been updated then we haven't actually deleted anything
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return false;
-    }
-
-    private String restructureKnowledge(int id, String username, String quote) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("(").append(id).append(") ").append(username).append(": ").append(quote);
-        return sb.toString();
     }
 
 }
