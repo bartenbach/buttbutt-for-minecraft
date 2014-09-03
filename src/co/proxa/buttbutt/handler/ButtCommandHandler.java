@@ -1,35 +1,25 @@
 package co.proxa.buttbutt.handler;
 
-import co.proxa.buttbutt.ButtSpeaker;
-import co.proxa.buttbutt.ButtUtils;
+import co.proxa.buttbutt.util.StringUtils;
 import co.proxa.buttbutt.Buttbutt;
-import co.proxa.buttbutt.sql.SqlManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class ButtCommandHandler {
 
-    private JavaPlugin butt;
-    private Logger buttLogger;
-    private ButtSpeaker buttSpeaker;
-    private ChatLoggingManager clm;
-    private SqlManager sqlManager;
-    private String commands = "grab, rq, bot, g, q, qinfo, qsay, qfind, yt, notch, rules, cbversion, grief, clear, ";
+    private Buttbutt butt;
+    //TODO not sure how to implement help for the bot still
+    //TODO this needs further refactoring.  it's pure madness really.  the laziness is too obvious.z
+    private String commands = "grab, rq, bot, g, q, qinfo, qsay, qfind, yt, notch, rules, cbversion, grief, clear";
 
-    public ButtCommandHandler(Buttbutt butt, ButtSpeaker buttSpeaker, ChatLoggingManager clm, SqlManager sqlManager) {
+    public ButtCommandHandler(Buttbutt butt) {
         this.butt = butt;
-        this.buttLogger = butt.getLogger();
-        this.buttSpeaker = buttSpeaker;
-        this.sqlManager = sqlManager;
-        this.clm = clm;
     }
 
     public void handleButtCommand(CommandSender sender, String[] cmd) {
@@ -38,148 +28,143 @@ public class ButtCommandHandler {
             player = (Player) sender;
         }
         if (cmd[0].equals("!bot")) {
-            buttSpeaker.buttMe("is a robot!", 10L);
-            buttSpeaker.buttMe("does the robot", 10L);
+            butt.getButtSpeaker().buttMe("is a robot!", 0L);
+            butt.getButtSpeaker().buttMe("does the robot", 0L);
         } else if (cmd[0].equals("!g")) {
             if (cmd.length > 1) {
-                String link = "http://www.google.com/search?q=" + ButtUtils.concatenateUrlArgs(cmd);
-                buttSpeaker.buttChat(link, 10L);
+                String link = "http://www.google.com/search?q=" + StringUtils.concatenateUrlArgs(cmd);
+                butt.getButtSpeaker().buttChat(link, 30L);
             }
         } else if (cmd[0].equals("!grab")){
             if (cmd.length == 2) {
                 if (cmd[1].equalsIgnoreCase(sender.getName()) || cmd[1].equalsIgnoreCase(ChatColor.stripColor(player.getDisplayName()))) {
-                    buttSpeaker.buttChat("You like grabbing yourself, " + player.getDisplayName() + "?", 20L);
+                    butt.getButtSpeaker().buttChat("You like grabbing yourself, " + player.getDisplayName() + "?", 30L);
                 } else {
-                    if (clm.hasQuoteFrom(cmd[1])) {
-                        String quote = clm.getLastQuoteFrom(cmd[1]);
+                    if (butt.getChatLoggingManager().hasQuoteFrom(cmd[1])) {
+                        String quote = butt.getChatLoggingManager().getLastQuoteFrom(cmd[1]);
                         try {
-                            if (!sqlManager.quoteAlreadyExists(cmd[1], quote)) {
-                                sqlManager.addQuote(cmd[1], quote, sender.getName());
-                                buttSpeaker.buttChat(sender.getName() + ": Tada!", 0L);
+                            if (!butt.getQuoteGrabTable().quoteAlreadyExists(cmd[1], quote)) {
+                                butt.getQuoteGrabTable().addQuote(cmd[1], quote, sender.getName());
+                                butt.getButtSpeaker().buttChat(sender.getName() + ": Tada!", 30L);
                             } else {
-                                buttLogger.info("Attempted to add duplicate quote - not adding duplicate.");
+                                butt.getLogger().info("Attempted to add duplicate quote - not adding duplicate.");
                             }
                         } catch (SQLException ex) {
                             System.out.println("SQL Exception encountered.");
                             ex.printStackTrace();
                         }
                     } else {
-                        buttSpeaker.buttChat(sender.getName() + ": i don't believe I've met " + cmd[1], 10L);
+                        butt.getButtSpeaker().buttChat(sender.getName() + ": i don't believe I've met " + cmd[1], 30L);
                     }
                 }
             } else {
-                buttSpeaker.buttMe("!grab <player>", 0L);
+                butt.getButtSpeaker().buttMe("!grab <player>", 30L);
             }
         } else if (cmd[0].equals("!rq")) {
             if (cmd.length == 1) {
-                try {
-                    String quote = sqlManager.getRandomQuote();
-                    if (quote != null) {
-                        buttSpeaker.buttMe(quote, 0L);
-                    } else {
-                        buttSpeaker.buttChat("Error: couldn't retrieve any quotes!", 50L);
-                    }
-                } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
-                    ex.printStackTrace();
+                String quote = butt.getQuoteGrabTable().getRandomQuote();
+                if (quote != null) {
+                    butt.getButtSpeaker().buttMe(quote, 30L);
+                } else {
+                    butt.getButtSpeaker().buttChat("Error: couldn't retrieve any quotes!", 50L);
                 }
             } else {
                 try {
-                    String quote = sqlManager.getRandomQuoteFromPlayer(cmd[1]);
+                    String quote = butt.getQuoteGrabTable().getRandomQuoteFromPlayer(cmd[1]);
                     if (quote != null) {
-                        buttSpeaker.buttMe(quote, 0L);
+                        butt.getButtSpeaker().buttMe(quote, 30L);
                     } else {
-                        buttSpeaker.buttChat("butt don't know " + cmd[1], 50L);
+                        butt.getButtSpeaker().buttChat("butt don't know " + cmd[1], 50L);
                     }
                 } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
+                    butt.getButtSpeaker().buttChat("error - butt find nothing... :(", 50L);
                     ex.printStackTrace();
                 }
             }
         } else if (cmd[0].equals("!q")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttMe("!q <player>", 0L);
+                butt.getButtSpeaker().buttMe("!q <player>", 30L);
             } else {
                 try {
-                    String quote = sqlManager.getLastQuoteFromPlayer(cmd[1]);
+                    String quote = butt.getQuoteGrabTable().getLastQuoteFromPlayer(cmd[1]);
                     if (quote != null) {
-                        buttSpeaker.buttMe(quote, 0L);
+                        butt.getButtSpeaker().buttMe(quote, 30L);
                     } else {
-                        buttSpeaker.buttChat("butt don't know " + cmd[1], 20L);
+                        butt.getButtSpeaker().buttChat("butt don't know " + cmd[1], 30L);
                     }
                 } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
+                    butt.getButtSpeaker().buttChat("error - butt find nothing... :(", 50L);
                     ex.printStackTrace();
                 }
             }
         } else if (cmd[0].equals("!qinfo")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttMe("!q <id>", 0L);
+                butt.getButtSpeaker().buttMe("!q <id>", 30L);
             } else {
                 try {
-                    String[] quote = sqlManager.getQuoteInfo(Integer.parseInt(cmd[1]));
+                    String[] quote = butt.getQuoteGrabTable().getQuoteInfo(Integer.parseInt(cmd[1]));
                     if (quote != null) {
-                        buttSpeaker.buttMe(quote[0], 0L);
-                        buttSpeaker.buttMe(quote[1], 0L);
+                        butt.getButtSpeaker().buttMe(quote[0], 30L);
+                        butt.getButtSpeaker().buttMe(quote[1], 30L);
                     } else {
-                        buttSpeaker.buttChat("no quote record with id of " + ChatColor.DARK_RED + cmd[1] + ChatColor.RESET, 20L);
+                        butt.getButtSpeaker().buttChat("no quote record with id of " + ChatColor.DARK_RED + cmd[1] + ChatColor.RESET, 30L);
                     }
                 } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
+                    butt.getButtSpeaker().buttChat("error - butt find nothing... :(", 50L);
                     ex.printStackTrace();
                 }
             }
         } else if (cmd[0].equals("!qsay")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttMe("!qsay <id>", 0L);
+                butt.getButtSpeaker().buttMe("!qsay <id>", 30L);
             } else {
                 try {
-                    String quote = sqlManager.getQuoteById(Integer.parseInt(cmd[1]));
+                    String quote = butt.getQuoteGrabTable().getQuoteById(Integer.parseInt(cmd[1]));
                     if (quote != null) {
-                        buttSpeaker.buttMe(quote, 0L);
+                        butt.getButtSpeaker().buttMe(quote, 30L);
                     } else {
-                        buttSpeaker.buttChat("no quote record with id of " + ChatColor.DARK_RED + cmd[1] + ChatColor.RESET, 20L);
+                        butt.getButtSpeaker().buttChat("no quote record with id of " + ChatColor.DARK_RED + cmd[1] + ChatColor.RESET, 30L);
                     }
                 } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
+                    butt.getButtSpeaker().buttChat("error - butt find nothing... :(", 50L);
                     ex.printStackTrace();
                 }
             }
         } else if (cmd[0].equals("!qfind") || cmd[0].equals("!qsearch")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttMe("!qfind <string>", 0L);
+                butt.getButtSpeaker().buttMe("!qfind <string>", 30L);
             } else {
                 try {
-                    String quote = sqlManager.findQuote(ButtUtils.getArgs(cmd));
+                    String quote = butt.getQuoteGrabTable().findQuote(StringUtils.getArgs(cmd));
                     if (quote != null) {
-                        buttSpeaker.buttMe(quote, 0L);
+                        butt.getButtSpeaker().buttMe(quote, 30L);
                     } else {
-                        buttSpeaker.buttChat("butt find nothing... :(", 20L);
+                        butt.getButtSpeaker().buttChat("sry butt find noting", 30L);
                     }
                 } catch (SQLException ex) {
-                    buttSpeaker.buttChat("error - butt find nothing... :(", 50L);
+                    butt.getButtSpeaker().buttChat("error - butt find nothing... :(", 50L);
                     ex.printStackTrace();
                 }
             }
         } else if (cmd[0].equals("!yt")) {
-            String link = "http://www.youtube.com/results?search_query=" + ButtUtils.concatenateUrlArgs(cmd);
-            buttSpeaker.buttMe(link, 0L);
+            String link = "http://www.youtube.com/results?search_query=" + StringUtils.concatenateUrlArgs(cmd);
+            butt.getButtSpeaker().buttMe(link, 30L);
         } else if (cmd[0].equals("!notch")) {
-            buttSpeaker.buttMe("Notch is the creator of minecraft.", 2L);
-            buttSpeaker.buttMe("http://www.minecraftwiki.net/wiki/Notch", 3L);
+            butt.getButtSpeaker().buttMe("Notch is the creator of minecraft.", 30L);
+            butt.getButtSpeaker().buttMe("http://www.minecraftwiki.net/wiki/Notch", 30L);
         } else if (cmd[0].equals("!clear") || cmd[0].equals("!cls") || cmd[0].equals("!reset")) {
-            for ( int x = 1 ; x < 20 ; x++ ) {
-                butt.getServer().broadcastMessage("");
+            for ( int x = 1 ; x < 21 ; x++ ) {
+                butt.getButtSpeaker().buttEmptyMsg(sender, "");
             }
         } else if (cmd[0].equals("!griefing") || cmd[0].equals("grief")) {
-            buttSpeaker.buttChat("grief would get buttbutt ban", 100L);
+            butt.getButtSpeaker().buttChat("grief would get buttbutt ban", 100L);
         } else if (cmd[0].equals("!cbversion")) {
-            buttSpeaker.buttMe("Running Craftbukkit " + butt.getServer().getBukkitVersion(), 0L);
+            butt.getButtSpeaker().buttMe("Running Craftbukkit " + butt.getServer().getBukkitVersion(), 10L);
         } else if (cmd[0].equals("!hal")) {
-            buttSpeaker.buttChat("I'm sorry Dave, I'm afraid I can't do that.", 100L);
+            butt.getButtSpeaker().buttChat("I'm sorry Dave, I'm afraid I can't do that.", 30L);
         } else if (cmd[0].equals("!slap")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttMe("slaps " + sender.getName() + " with a large trout", 20L);
+                butt.getButtSpeaker().buttMe("slaps " + sender.getName() + " with a large trout", 30L);
             } else {
                 try {
                     Player player2 = butt.getServer().getPlayer(cmd[1]);
@@ -187,121 +172,112 @@ public class ButtCommandHandler {
                     Vector dir = player2.getLocation().getDirection();
                     Vector newv = new Vector(dir.getX(), dir.getY() + 0.2, dir.getZ());
                     player2.setVelocity(newv);
-                    buttSpeaker.buttMe("slaps " + ButtUtils.getArgs(cmd) + "with a large trout", 20L);
+                    butt.getButtSpeaker().buttMe("slaps " + StringUtils.getArgs(cmd) + "with a large trout", 30L);
                 } catch (Exception ex) {
-                    buttSpeaker.buttMe(ButtUtils.getArgs(cmd) + "is out of my reach", 5L);
+                    butt.getButtSpeaker().buttMe(StringUtils.getArgs(cmd) + "is out of my reach", 30L);
                 }
             }
         } else if (cmd[0].equals("!rage")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttChat("we are in the midst of a rage quit", 10L);
+                butt.getButtSpeaker().buttChat("we are in the midst of a rage quit", 30L);
             } else {
-                buttSpeaker.buttChat("i sense a rage quit involving " + ButtUtils.getArgs(cmd), 10L);
+                butt.getButtSpeaker().buttChat("i sense a rage quit involving " + StringUtils.getArgs(cmd), 30L);
             }
         } else if (cmd[0].equals("!home")) {
             if (!(sender instanceof Player)) {
-                buttSpeaker.buttMsg(sender, "you don't have a home");
+                butt.getButtSpeaker().buttMsg(sender, "you don't have a home");
             } else {
                 if (cmd.length == 1) {
                     if (player.getBedSpawnLocation() != null) {
                         player.teleport(player.getBedSpawnLocation());
-                        buttSpeaker.buttMsg(player, "buttbutt take u home safely");
+                        butt.getButtSpeaker().buttMsg(player, "buttbutt take u home safely");
                     } else {
-                        buttSpeaker.buttMsg(player, "butt don't know where u home is at");
+                        butt.getButtSpeaker().buttMsg(player, "butt don't know where u home is at");
                     }
                 } else {
-                    buttSpeaker.buttChat("Usage: !home", 0L);
+                    butt.getButtSpeaker().buttChat("Usage: !home", 30L);
                 }
             }
         } else if (cmd[0].equals("!sexy")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttChat(sender.getName() + "is a sexy beast!  Meeeow!", 10L);
+                butt.getButtSpeaker().buttChat(sender.getName() + "is a sexy beast!  Meeeow!", 30L);
             } else {
-                buttSpeaker.buttChat(ButtUtils.getArgs(cmd) + "is a sexy beast!  Meeeow!", 10L);
+                butt.getButtSpeaker().buttChat(StringUtils.getArgs(cmd) + "is a sexy beast!  Meeeow!", 30L);
             }
         } else if (cmd[0].equals("!fail")) {
-            buttSpeaker.buttChat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "AHHH THE FAILURE! IT BURRRRNS!!", 10L);
+            butt.getButtSpeaker().buttChat(ChatColor.DARK_RED + "" + ChatColor.BOLD + "AHHH THE FAILURE! IT BURRRRNS!!", 30L);
         } else if (cmd[0].equals("!halp")) {
-            buttSpeaker.buttChat("admin pls", 10L);
+            butt.getButtSpeaker().buttChat("admin pls", 30L);
         } else if (cmd[0].equals("!respond")) {
-            buttSpeaker.buttChat("pls respond", 10L);
+            butt.getButtSpeaker().buttChat("pls respond", 30L);
         } else if (cmd[0].equals("!version")) {
-            buttSpeaker.buttChat(butt.getDescription().getVersion(), 10L);
+            butt.getButtSpeaker().buttChat(butt.getDescription().getVersion(), 10L);
         } else if (cmd[0].equals("!dice") || cmd[0].equals("!roll")) {
             int players = butt.getServer().getOnlinePlayers().length;
             int dice = (int) (Math.random()*players);
-            buttSpeaker.buttMe("rolls a huge " + players + " sided die and it flattens "
-                    + butt.getServer().getOnlinePlayers()[dice].getName(), 10L);
-            buttSpeaker.buttMe("before coming to a halt on " + ChatColor.DARK_RED + "YOU LOSE", 10L);
+            butt.getButtSpeaker().buttMe("rolls a huge " + players + " sided die and it flattens "
+                    + butt.getServer().getOnlinePlayers()[dice].getName(), 30L);
+            butt.getButtSpeaker().buttMe("before coming to a halt on " + ChatColor.DARK_RED + "YOU LOSE", 30L);
         } else if (cmd[0].equals("!bloat")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttChat("Everything is bloat.", 10L);
+                butt.getButtSpeaker().buttChat("Everything is bloat.", 30L);
             } else {
-                buttSpeaker.buttChat(ButtUtils.getArgs(cmd) + "is bloat.", 10L);
+                butt.getButtSpeaker().buttChat(StringUtils.getArgs(cmd) + "is bloat.", 30L);
             }
         } else if (cmd[0].equals("!bai")) {
-            buttSpeaker.buttChat("bai" + ButtUtils.getArgs(cmd), 10L);
+            butt.getButtSpeaker().buttChat("bai" + StringUtils.getArgs(cmd), 30L);
         }  else if (cmd[0].equals("!oss")) {
-            buttSpeaker.buttMe("is an open source project", 0L);
-            buttSpeaker.buttMe(butt.getDescription().getWebsite(), 1L);
+            butt.getButtSpeaker().buttMe("is an open source project", 10L);
+            butt.getButtSpeaker().buttMe(butt.getDescription().getWebsite(), 10L);
         } else if (cmd[0].equals("!fd")) {
             int random = (int) (Math.random()*7)+2;
-            buttSpeaker.buttBroadcast(ChatColor.AQUA + "buttbutt found " + random + " diamonds!");
+            butt.getButtSpeaker().buttBroadcast(ChatColor.AQUA + "buttbutt found " + random + " diamonds!");
         } else if (cmd[0].equals("!hai")) {
             if (cmd.length == 1) {
-                buttSpeaker.buttChat("ohai", 10L);
+                butt.getButtSpeaker().buttChat("ohai", 30L);
             } else {
-                buttSpeaker.buttChat("hai there " + ButtUtils.getArgs(cmd), 10L);
+                butt.getButtSpeaker().buttChat("hai there " + StringUtils.getArgs(cmd), 30L);
             }
         } else if (cmd[0].equals("!dance")) {
-            buttSpeaker.buttMe("does the robot", 0L);
+            butt.getButtSpeaker().buttMe("does the robot", 30L);
         } else if (cmd[0].equals("!insult")) {
             if (cmd.length >= 2) {
-                int random = (int) (Math.random()*6);
-                switch (random) {
-                    case 0:
-                        buttSpeaker.buttChat("Your mother was a poopbutt, " + ButtUtils.getArgs(cmd) + "!", 10L);
-                        break;
-                    case 1:
-                        buttSpeaker.buttChat("You're not as bad as people say, " + ButtUtils.getArgs(cmd), 10L);
-                        buttSpeaker.buttChat("You're worse!", 10L);
-                        break;
-                    case 2:
-                        buttSpeaker.buttChat("I'm busy right now, " + ButtUtils.getArgs(cmd), 10L);
-                        buttSpeaker.buttChat("Can I ignore you some other time?", 10L);
-                        break;
-                    case 3:
-                        buttSpeaker.buttChat("Leaving so soon, " + ButtUtils.getArgs(cmd) + "?", 10L);
-                        buttSpeaker.buttChat("I didn't have a chance to poison your tea...", 10L);
-                        break;
-                    case 4:
-                        buttSpeaker.buttChat("You really grow on people, " + ButtUtils.getArgs(cmd) + "...", 10L);
-                        buttSpeaker.buttChat("Kinda like a wart.", 10L);
-                        break;
-                    case 5:
-                        buttSpeaker.buttChat("You're as sharp as a marble, " + ButtUtils.getArgs(cmd), 10L);
-                        break;
-                    default:
-                        butt.getLogger().warning("This should never happen either: " + random);
-                        break;
-                }
+                butt.getInsultHandler().insultPlayer(cmd);
             }
         } else if (cmd[0].equals("!random")) {
             int random = (int) (Math.random() * 1000000);
-            buttSpeaker.buttChat(random + " is a random number", 10L);
+            butt.getButtSpeaker().buttChat(random + " is a random number", 30L);
+        } else if (cmd[0].equals("!learn")) {
+            butt.getKnowledgeHandler().addKnowledge(sender.getName(), cmd);
+            butt.getButtSpeaker().buttChat("ok " + sender.getName() + " got it", 30L);
+        } else if (cmd[0].equals("!unlearn")) {
+            boolean success = butt.getKnowledgeHandler().removeKnowledge(cmd);
+            if (success) {
+                butt.getButtSpeaker().buttChat("ok butt wont member that no more", 30L);
+            } else {
+                butt.getButtSpeaker().buttChat("butt dont kno nothin bout that", 30L);
+            }
+        } else if (cmd[0].startsWith("~")) {
+            cmd[0] = cmd[0].substring(1, cmd[0].length());
+            String info = butt.getKnowledgeHandler().getKnowledge(cmd);
+            if (info != null) {
+                butt.getButtSpeaker().buttChat(info, 30L);
+            } else {
+                butt.getButtSpeaker().buttChat("butt dun kno nothin bout that", 30L);
+            }
         } else if (cmd[0].equals("!drink")) {
             if (cmd.length >= 2) {
-                String playerName = ButtUtils.getArgs(cmd);
+                String playerName = StringUtils.getArgs(cmd);
                 try {
                     Player player2 = butt.getServer().getPlayer(playerName);
                     player2.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 150, 5));
-                    buttSpeaker.buttChat("Have a drink, " + playerName, 10L);
+                    butt.getButtSpeaker().buttChat("Have a drink, " + playerName, 30L);
                 } catch (Exception ex) {
-                    buttSpeaker.buttChat("who is " + playerName + "?", 10L);
+                    butt.getButtSpeaker().buttChat("who is " + playerName + "?", 30L);
                 }
             }
         } else if (cmd[0].equals("!poop")) {
-            buttSpeaker.buttMe("lets out a big slicker *plop*", 10L);
+            butt.getButtSpeaker().buttMe("lets out a big slicker *plop*", 30L);
         }
     }
 

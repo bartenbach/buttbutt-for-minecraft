@@ -20,7 +20,7 @@ public class PlayerListHandler {
     }
 
     public void sendTabListPacket(Player player) {
-        PacketContainer buttPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
+        PacketContainer buttPacket = butt.getProtocolManager().createPacket(PacketType.Play.Server.PLAYER_INFO);
         buttPacket.getStrings().write(0, ChatColor.GOLD + "buttbutt");
         buttPacket.getBooleans().write(0, true);
         buttPacket.getIntegers().write(0, 10);

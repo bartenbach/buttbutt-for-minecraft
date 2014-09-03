@@ -1,5 +1,6 @@
-package co.proxa.buttbutt;
+package co.proxa.buttbutt.handler;
 
+import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -39,6 +40,15 @@ public class ButtSpeaker {
             public void run() {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.GOLD + "buttbutt " + ChatColor.GRAY
                         + " -> me] " + ChatColor.WHITE + buttFormat);
+            }
+        },10L);
+    }
+
+    public void buttEmptyMsg(final CommandSender sender, final String buttFormat) {
+        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+            @Override
+            public void run() {
+                sender.sendMessage(buttFormat);
             }
         },10L);
     }

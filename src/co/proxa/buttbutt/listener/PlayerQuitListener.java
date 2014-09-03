@@ -1,16 +1,16 @@
 package co.proxa.buttbutt.listener;
 
-import co.proxa.buttbutt.ButtSpeaker;
+import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerQuitListener implements Listener {
 
-    private ButtSpeaker butt;
+    private Buttbutt butt;
 
-    public PlayerQuitListener(ButtSpeaker cl) {
-        this.butt = cl;
+    public PlayerQuitListener(Buttbutt butt) {
+        this.butt = butt;
     }
 
     @EventHandler
@@ -18,7 +18,7 @@ public class PlayerQuitListener implements Listener {
         int random = (int) (Math.random()*10);
         switch (random) {
         case 0:
-            butt.buttChat("I miss " + event.getPlayer().getName() + " already...", 200L);
+            butt.getButtSpeaker().buttChat("I miss " + event.getPlayer().getName() + " already...", 200L);
         }
     }
 }

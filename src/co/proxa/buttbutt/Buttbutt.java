@@ -1,28 +1,25 @@
 package co.proxa.buttbutt;
 
 import co.proxa.buttbutt.file.FileManager;
-import co.proxa.buttbutt.handler.ButtCommandHandler;
-import co.proxa.buttbutt.handler.ButtNameResponseHandler;
-import co.proxa.buttbutt.handler.ChatLoggingManager;
-import co.proxa.buttbutt.handler.PlayerListHandler;
+import co.proxa.buttbutt.handler.*;
 import co.proxa.buttbutt.listener.ChatListener;
 import co.proxa.buttbutt.listener.ConsoleListener;
 import co.proxa.buttbutt.listener.PlayerJoinListener;
 import co.proxa.buttbutt.listener.PlayerQuitListener;
+import co.proxa.buttbutt.sql.KnowledgeTable;
+import co.proxa.buttbutt.sql.QuoteGrabTable;
 import co.proxa.buttbutt.sql.SqlManager;
 import co.proxa.buttbutt.thread.ButtDeath;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.SQLException;
 import java.util.logging.Logger;
 
 /*
-    * Fixed buttbutt replying with an empty message (again?)
-    + Added buttbutt to the tab list!
-
-
+    * Cleaned up a lot of lazy, sloppy code
+    + Added knowledgeTable framework
+    + Added buttSayings framework
  */
 
 public class Buttbutt extends JavaPlugin {
@@ -30,16 +27,21 @@ public class Buttbutt extends JavaPlugin {
     private ButtSpeaker bs = new ButtSpeaker(this);
     private Logger buttLogger = this.getLogger();
     private ChatLoggingManager clm = new ChatLoggingManager();
-    private SqlManager sqlManager = new SqlManager(this.getConfig(), buttLogger);
-    private ButtCommandHandler bch = new ButtCommandHandler(this, bs, clm, sqlManager);
+    private SqlManager sqlManager = new SqlManager(this);
+    private ButtCommandHandler bch = new ButtCommandHandler(this);
     private ConsoleListener conl = new ConsoleListener(this);
     private ChatListener cl = new ChatListener(this);
     private PlayerJoinListener pjl = new PlayerJoinListener(this);
-    private PlayerQuitListener pql = new PlayerQuitListener(bs);
-    private ButtDeath bd = new ButtDeath(this, bs);
+    private PlayerQuitListener pql = new PlayerQuitListener(this);
+    private ButtDeath bd = new ButtDeath(this);
     private FileManager fileManager = new FileManager(this);
     private PlayerListHandler plh = new PlayerListHandler(this);
     private ButtNameResponseHandler bnrh = new ButtNameResponseHandler(this);
+    private QuoteGrabTable quoteGrabTable = new QuoteGrabTable(this);
+    private KnowledgeTable knowledgeTable = new KnowledgeTable(this);
+    private KnowledgeHandler knowledgeHandler = new KnowledgeHandler(this);
+    private ButtFormatter buttFormatter = new ButtFormatter();
+    private InsultHandler insultHandler = new InsultHandler(this);
     private ProtocolManager pm;
 
     public void onLoad() {
@@ -51,16 +53,9 @@ public class Buttbutt extends JavaPlugin {
         pm = ProtocolLibrary.getProtocolManager();
         plh.initPacketListener();
         if (this.isEnabled()) {
-            try {
-                sqlManager.connectToDatabase();
-                buttLogger.info("Database connected");
-                sqlManager.createTablesIfNeeded();
-            } catch (SQLException ex) {
-                buttLogger.severe("Failed to establish SQL connection:");
-                ex.printStackTrace();
-                buttLogger.severe("**********DISABLING**********");
-                this.getPluginLoader().disablePlugin(this);
-            }
+            sqlManager.connectToDatabase();
+            buttLogger.info("Database connected");
+            sqlManager.createTablesIfNeeded();
             if (this.isEnabled()) {
                 getServer().getPluginManager().registerEvents(cl, this);
                 getServer().getPluginManager().registerEvents(pjl, this);
@@ -94,6 +89,18 @@ public class Buttbutt extends JavaPlugin {
     public ProtocolManager getProtocolManager() {
         return this.pm;
     }
+
+    public SqlManager getSqlManager() { return this.sqlManager; }
+
+    public QuoteGrabTable getQuoteGrabTable() { return this.quoteGrabTable; }
+
+    public KnowledgeTable getKnowledgeTable() { return this.knowledgeTable; }
+
+    public KnowledgeHandler getKnowledgeHandler() { return this.knowledgeHandler; }
+
+    public ButtFormatter getButtFormatter() { return this.buttFormatter; }
+
+    public InsultHandler getInsultHandler() { return this.insultHandler; }
 
     @Override
     public void onDisable() {
