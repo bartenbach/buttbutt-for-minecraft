@@ -213,11 +213,11 @@ public class ButtCommandHandler {
         } else if (cmd[0].equals("!version")) {
             butt.getButtSpeaker().buttChat(butt.getDescription().getVersion(), 10L);
         } else if (cmd[0].equals("!dice") || cmd[0].equals("!roll")) {
-            int players = butt.getServer().getOnlinePlayers().length;
-            int dice = (int) (Math.random()*players);
-            butt.getButtSpeaker().buttMe("rolls a huge " + players + " sided die and it flattens "
-                    + butt.getServer().getOnlinePlayers()[dice].getName(), 30L);
-            butt.getButtSpeaker().buttMe("before coming to a halt on " + ChatColor.DARK_RED + "YOU LOSE", 30L);
+//            int players = butt.getServer().getOnlinePlayers().size();
+//            int dice = (int) (Math.random()*players);
+//            butt.getButtSpeaker().buttMe("rolls a huge " + players + " sided die and it flattens "
+//                    + butt.getServer().getOnlinePlayers()[dice].getName(), 30L);
+//            butt.getButtSpeaker().buttMe("before coming to a halt on " + ChatColor.DARK_RED + "YOU LOSE", 30L);
         } else if (cmd[0].equals("!bloat")) {
             if (cmd.length == 1) {
                 butt.getButtSpeaker().buttChat("Everything is bloat.", 30L);

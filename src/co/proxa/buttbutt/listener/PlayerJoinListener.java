@@ -15,8 +15,8 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        butt.getPlayerListHandler().sendPlayerListPacket(event.getPlayer());
-        butt.getPlayerListHandler().sendTabListPacket(event.getPlayer());
+        //butt.getPlayerListHandler().sendPlayerListPacket(event.getPlayer());
+        //butt.getPlayerListHandler().sendTabListPacket(event.getPlayer());
         if (event.getPlayer().hasPlayedBefore()) {
             int random = (int) (Math.random()*100);
             if (event.getPlayer().getName().equalsIgnoreCase("seed419")) {

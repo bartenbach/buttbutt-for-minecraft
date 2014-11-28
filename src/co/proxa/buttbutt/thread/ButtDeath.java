@@ -16,7 +16,7 @@ public class ButtDeath extends Thread {
             try {
                 if (this.butt != null) {
                     Thread.sleep(3000000);
-                    if (butt.getServer().getOnlinePlayers().length > 0) {
+                    if (butt.getServer().getOnlinePlayers().size() > 0) {
                         this.buttDie();
                         double rand = (Math.random() * 100);
                         if (rand < 5) {

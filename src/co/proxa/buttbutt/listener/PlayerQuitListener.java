@@ -15,10 +15,12 @@ public class PlayerQuitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        int random = (int) (Math.random()*10);
-        switch (random) {
-        case 0:
-            butt.getButtSpeaker().buttChat("I miss " + event.getPlayer().getName() + " already...", 200L);
+        if (butt.getServer().getOnlinePlayers().size() > 0) {
+            int random = (int) (Math.random() * 10);
+            switch (random) {
+                case 0:
+                    butt.getButtSpeaker().buttChat("I miss " + event.getPlayer().getName() + " already...", 200L);
+            }
         }
     }
 }

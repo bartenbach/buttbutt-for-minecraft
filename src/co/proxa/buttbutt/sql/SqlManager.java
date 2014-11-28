@@ -17,16 +17,16 @@ public class SqlManager {
     private String database;
 
     public SqlManager(Buttbutt butt) {
+        this.butt        = butt;
+    }
+
+    public void connectToDatabase() {
         this.username    = butt.getConfig().getString(Path.SQL_USERNAME.filePath);
         this.password    = butt.getConfig().getString(Path.SQL_PASSWORD.filePath);
         this.ip          = butt.getConfig().getString(Path.SQL_IP.filePath);
         this.port        = butt.getConfig().getString(Path.SQL_PORT.filePath);
         this.tablePrefix = butt.getConfig().getString(Path.SQL_TABLE_PREFIX.filePath);
         this.database    = butt.getConfig().getString(Path.SQL_DATABASE.filePath);
-        this.butt        = butt;
-    }
-
-    public void connectToDatabase() {
         String url = "jdbc:mysql://" + this.ip + ":" + this.port + "/" + this.database;
         try {
             this.connection = DriverManager.getConnection(url, this.username, this.password);

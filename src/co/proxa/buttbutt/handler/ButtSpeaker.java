@@ -3,20 +3,17 @@ package co.proxa.buttbutt.handler;
 import co.proxa.buttbutt.Buttbutt;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitScheduler;
 
 public class ButtSpeaker {
 
     private Buttbutt butt;
-    private BukkitScheduler buttScheduler;
 
     public ButtSpeaker(Buttbutt butt) {
         this.butt = butt;
-        this.buttScheduler = butt.getServer().getScheduler();
     }
 
     public void buttChat(final String buttFormat, final long delay) {
-        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 butt.getServer().broadcastMessage(ChatColor.GOLD + "buttbutt " + ChatColor.GRAY + buttFormat);
@@ -25,7 +22,7 @@ public class ButtSpeaker {
     }
 
     public void buttMe(final String buttFormat, final long delay) {
-        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 butt.getServer().broadcastMessage(ChatColor.WHITE + "* " +
@@ -35,7 +32,7 @@ public class ButtSpeaker {
     }
 
     public void buttMsg(final CommandSender sender, final String buttFormat) {
-        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.GOLD + "buttbutt " + ChatColor.GRAY
@@ -45,7 +42,7 @@ public class ButtSpeaker {
     }
 
     public void buttEmptyMsg(final CommandSender sender, final String buttFormat) {
-        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 sender.sendMessage(buttFormat);
@@ -54,7 +51,7 @@ public class ButtSpeaker {
     }
 
     public void buttBroadcast(final String buttFormat) {
-        buttScheduler.scheduleSyncDelayedTask(butt, new Runnable() {
+        butt.getServer().getScheduler().scheduleSyncDelayedTask(butt, new Runnable() {
             @Override
             public void run() {
                 butt.getServer().broadcastMessage(buttFormat);
