@@ -1,4 +1,4 @@
-package co.proxa.testbutt;
+/*package co.proxa.testbutt;
 
 import co.proxa.buttbutt.handler.PlayerListHandler;
 import co.proxa.buttbutt.listener.PlayerJoinListener;
@@ -29,4 +29,4 @@ public class PlayerJoinTest extends TestInstanceCreator {
         playerJoinListener.onPlayerJoin(mockEvent);
     }
 
-}
+}*/

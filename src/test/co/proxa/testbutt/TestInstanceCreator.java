@@ -1,3 +1,4 @@
+/*
 package co.proxa.testbutt;
 
 import co.proxa.buttbutt.Buttbutt;
@@ -39,22 +40,31 @@ public class TestInstanceCreator {
 
     @Before
     public void setUp() throws Exception {
-        /* Set up our mock server and scheduler */
+        */
+/* Set up our mock server and scheduler *//*
+
         mockServer = mock(Server.class);
         mockScheduler = mock(BukkitScheduler.class);
         when(mockServer.getScheduler()).thenReturn(mockScheduler);
 
-        /* mock our main plugin class and config */
+        */
+/* mock our main plugin class and config *//*
+
         mockButt = mock(Buttbutt.class);
         when(mockButt.getConfig()).thenReturn(config);
 
-        /* mock a player */
+        */
+/* mock a player *//*
+
         mockPlayer = mock(Player.class);
         when(mockPlayer.getName()).thenReturn("MockPlayer");
 
-        /* mock other necessary classes */
+        */
+/* mock other necessary classes *//*
+
         mockPlayerListHandler = mock(PlayerListHandler.class);
     }
 
 
 }
+*/

@@ -95,7 +95,7 @@ public class SqlManager {
                 if (objects[i] instanceof String) {
                     ps.setString((i+1), (String) objects[i]);
                 } else {
-                    ps.setInt((i+1), (int) objects[i]);
+                    ps.setInt((i+1), Integer.parseInt(String.valueOf(objects[i])));
                 }
                 i++;
             }
